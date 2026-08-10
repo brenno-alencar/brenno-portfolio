@@ -24,21 +24,26 @@ import {
 const experience = {
   title: "Minha experiência",
   description:
-    "Experiência com desenvolvimento web full stack, atuando em projetos reais de automação, agronegócio e freelance com foco em front-end moderno e performance.",
+    "Experiência com desenvolvimento front-end, atuando em projetos reais de automação, agronegócio e projetos freelance, com foco em interfaces modernas, responsivas e acessíveis.",
   items: [
     {
-      period: "Jan 2025 - Mar 2026",
-      role: "Software Engineer",
+      period: "Ago/2026 - Atual",
+      role: "Estudos e Projetos Pessoais",
+      company: "Autônomo",
+    },
+    {
+      period: "Jan/2025 - Mar/2026",
+      role: "Desenvolvedor Full Stack (Foco em Front-end)",
       company: "GVD Soluções Inteligentes",
     },
     {
-      period: "Fev 2024 - Jan 2025",
-      role: "Desenvolvedor Web",
+      period: "Fev/2024 - Jan/2025",
+      role: "Desenvolvedor Front-end",
       company: "Core Tecnologia",
     },
     {
-      period: "Out 2023 - Jan 2025",
-      role: "Desenvolvedor Freelancer",
+      period: "Out/2023 - Jan/2025",
+      role: "Desenvolvedor Front-end",
       company: "Projetos próprios · Remoto",
     },
   ],
@@ -62,7 +67,7 @@ const education = {
 const skills = {
   title: "Minhas skills",
   description:
-    "Algumas das tecnologias com as quais trabalho e possuo domínio, utilizadas no desenvolvimento de aplicações modernas, responsivas e eficientes.",
+    "Algumas das tecnologias com as quais trabalho e possuo domínio, utilizadas no desenvolvimento de aplicações modernas, responsivas e acessíveis.",
   items: [
     { icon: <FaHtml5 />, name: "HTML 5" },
     { icon: <FaCss3Alt />, name: "CSS 3" },
@@ -75,7 +80,6 @@ const skills = {
     { icon: <FaNodeJs />, name: "Node.js" },
     { icon: <FaGit />, name: "Git" },
     { icon: <FaFigma />, name: "Figma" },
-    { icon: <FaPhp />, name: "PHP" },
   ],
 };
 
@@ -223,7 +227,7 @@ const Sobre = () => {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration:  0.3 }}
+            transition={{ delay: 0.4, duration: 0.3 }}
             className="flex xl:flex-col gap-3 xl:w-[220px] shrink-0"
           >
             {tabs.map((tab) => (
