@@ -4,7 +4,12 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FiArrowUpRight, FiGithub, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {
+  FiArrowUpRight,
+  FiGithub,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 
 const projects = [
   {
@@ -16,7 +21,7 @@ const projects = [
     stack: ["Next.js", "Tailwind CSS", "Framer Motion"],
     live: "https://brenno-portfolio.vercel.app/",
     github: "https://github.com/BrennoAlenkar/brenno-portfolio",
-    image: "/assets/img-portfolio.png",
+    image: "/assets/brenno-portfolio-mockup.png",
   },
   {
     num: "02",
@@ -46,14 +51,14 @@ const Projetos = () => {
   const [index, setIndex] = useState(0);
   const project = projects[index];
 
-  const prev = () => setIndex((i) => (i - 1 + projects.length) % projects.length);
+  const prev = () =>
+    setIndex((i) => (i - 1 + projects.length) % projects.length);
   const next = () => setIndex((i) => (i + 1) % projects.length);
 
   return (
     <section className="min-h-[80vh] flex flex-col justify-center py-12 xl:py-0">
       <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 xl:px-16">
         <div className="flex flex-col xl:flex-row gap-10 xl:gap-16 items-center">
-
           {/* lado esquerdo */}
           <div className="flex flex-col gap-6 xl:w-[480px] shrink-0">
             <AnimatePresence mode="wait">
@@ -62,14 +67,15 @@ const Projetos = () => {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
-                transition={{ 
+                transition={{
                   delay: 0.6,
                   duration: 0.3,
                 }}
                 className="flex flex-col gap-5"
               >
                 {/* número */}
-                <span className="text-[80px] leading-none font-extrabold text-outline text-transparent group-hover:text-outline-hover transition-all duration-500"
+                <span
+                  className="text-[80px] leading-none font-extrabold text-outline text-transparent group-hover:text-outline-hover transition-all duration-500"
                   // style={{ WebkitTextStroke: "1px rgba(255,255,255,0.15)" }}
                 >
                   {project.num}
@@ -96,7 +102,9 @@ const Projetos = () => {
                     <span
                       key={i}
                       className={`text-sm font-medium text-accent ${
-                        i < project.stack.length - 1 ? "after:content-[','] after:mr-1" : ""
+                        i < project.stack.length - 1
+                          ? "after:content-[','] after:mr-1"
+                          : ""
                       }`}
                     >
                       {tech}
@@ -154,7 +162,7 @@ const Projetos = () => {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ 
+                transition={{
                   delay: 0.4,
                   duration: 0.35,
                 }}
@@ -186,7 +194,6 @@ const Projetos = () => {
               ))}
             </div>
           </div>
-
         </div>
       </div>
     </section>

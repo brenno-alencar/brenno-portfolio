@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { FiPhone, FiMail, FiMapPin } from "react-icons/fi";
 import emailjs from "@emailjs/browser";
@@ -53,6 +53,16 @@ const EMPTY_ERRORS = {
   mensagem: "",
 };
 
+// ordem em que os campos devem ser verificados/focados
+const FIELD_ORDER = [
+  "nome",
+  "sobrenome",
+  "email",
+  "telefone",
+  "servico",
+  "mensagem",
+];
+
 // regex simples para validar formato de email
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // aceita formatos como (62) 99200-2421, 62992002421, +55 62 99200-2421 etc.
@@ -62,6 +72,16 @@ const Contato = () => {
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState(EMPTY_ERRORS);
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
+
+  // refs para cada campo, usados para mover o foco automaticamente
+  const fieldRefs = {
+    nome: useRef(null),
+    sobrenome: useRef(null),
+    email: useRef(null),
+    telefone: useRef(null),
+    servico: useRef(null),
+    mensagem: useRef(null),
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -107,6 +127,23 @@ const Contato = () => {
     return newErrors;
   };
 
+  // encontra o primeiro campo com erro (respeitando a ordem do formulário)
+  // e move o foco do teclado/cursor até ele
+  const focusFirstError = (validationErrors) => {
+    const firstErrorField = FIELD_ORDER.find(
+      (fieldName) => validationErrors[fieldName],
+    );
+
+    if (firstErrorField && fieldRefs[firstErrorField]?.current) {
+      fieldRefs[firstErrorField].current.focus();
+      // scroll suave até o campo, útil em telas menores/formulários longos
+      fieldRefs[firstErrorField].current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -116,6 +153,7 @@ const Contato = () => {
     if (hasErrors) {
       setErrors(validationErrors);
       setStatus("idle");
+      focusFirstError(validationErrors);
       return;
     }
 
@@ -133,7 +171,7 @@ const Contato = () => {
           servico: form.servico,
           mensagem: form.mensagem,
         },
-        PUBLIC_KEY
+        PUBLIC_KEY,
       );
 
       setStatus("success");
@@ -157,17 +195,16 @@ const Contato = () => {
     <section className="flex flex-col justify-center py-8 xl:py-6">
       <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 xl:px-16">
         <div className="flex flex-col xl:flex-row gap-8 xl:gap-12">
-
           {/* formulário */}
           <motion.form
             noValidate
             onSubmit={handleSubmit}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ 
+            transition={{
               delay: 0.4,
               duration: 0.4,
-             }}
+            }}
             className="flex-1 bg-[#1c1c22] rounded-2xl p-6 xl:p-8 flex flex-col gap-4 border border-white/5"
           >
             <div className="flex flex-col gap-1">
@@ -175,13 +212,15 @@ const Contato = () => {
                 Vamos trabalhar juntos
               </h2>
               <p className="text-white/60 text-sm leading-relaxed max-w-[420px]">
-                Tem um projeto em mente? Preencha o formulário e entro em contato o quanto antes.
+                Tem um projeto em mente? Preencha o formulário e entro em
+                contato o quanto antes.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="flex flex-col gap-1">
                 <input
+                  ref={fieldRefs.nome}
                   name="nome"
                   value={form.nome}
                   onChange={handleChange}
@@ -189,12 +228,15 @@ const Contato = () => {
                   className={fieldClass("nome")}
                 />
                 {errors.nome && (
-                  <span className="text-red-400 text-xs px-1">{errors.nome}</span>
+                  <span className="text-red-400 text-xs px-1">
+                    {errors.nome}
+                  </span>
                 )}
               </div>
 
               <div className="flex flex-col gap-1">
                 <input
+                  ref={fieldRefs.sobrenome}
                   name="sobrenome"
                   value={form.sobrenome}
                   onChange={handleChange}
@@ -202,12 +244,15 @@ const Contato = () => {
                   className={fieldClass("sobrenome")}
                 />
                 {errors.sobrenome && (
-                  <span className="text-red-400 text-xs px-1">{errors.sobrenome}</span>
+                  <span className="text-red-400 text-xs px-1">
+                    {errors.sobrenome}
+                  </span>
                 )}
               </div>
 
               <div className="flex flex-col gap-1">
                 <input
+                  ref={fieldRefs.email}
                   name="email"
                   value={form.email}
                   onChange={handleChange}
@@ -216,12 +261,15 @@ const Contato = () => {
                   className={fieldClass("email")}
                 />
                 {errors.email && (
-                  <span className="text-red-400 text-xs px-1">{errors.email}</span>
+                  <span className="text-red-400 text-xs px-1">
+                    {errors.email}
+                  </span>
                 )}
               </div>
 
               <div className="flex flex-col gap-1">
                 <input
+                  ref={fieldRefs.telefone}
                   name="telefone"
                   value={form.telefone}
                   onChange={handleChange}
@@ -230,7 +278,9 @@ const Contato = () => {
                   className={fieldClass("telefone")}
                 />
                 {errors.telefone && (
-                  <span className="text-red-400 text-xs px-1">{errors.telefone}</span>
+                  <span className="text-red-400 text-xs px-1">
+                    {errors.telefone}
+                  </span>
                 )}
               </div>
             </div>
@@ -239,6 +289,7 @@ const Contato = () => {
             <div className="flex flex-col gap-1">
               <div className="relative">
                 <select
+                  ref={fieldRefs.servico}
                   name="servico"
                   value={form.servico}
                   onChange={handleChange}
@@ -250,7 +301,11 @@ const Contato = () => {
                     Selecione um serviço *
                   </option>
                   {services.map((s, i) => (
-                    <option key={i} value={s} className="text-white bg-[#232329]">
+                    <option
+                      key={i}
+                      value={s}
+                      className="text-white bg-[#232329]"
+                    >
                       {s}
                     </option>
                   ))}
@@ -260,13 +315,16 @@ const Contato = () => {
                 </span>
               </div>
               {errors.servico && (
-                <span className="text-red-400 text-xs px-1">{errors.servico}</span>
+                <span className="text-red-400 text-xs px-1">
+                  {errors.servico}
+                </span>
               )}
             </div>
 
             {/* textarea */}
             <div className="flex flex-col gap-1">
               <textarea
+                ref={fieldRefs.mensagem}
                 name="mensagem"
                 value={form.mensagem}
                 onChange={handleChange}
@@ -275,7 +333,9 @@ const Contato = () => {
                 className={`resize-none ${fieldClass("mensagem")}`}
               />
               {errors.mensagem && (
-                <span className="text-red-400 text-xs px-1">{errors.mensagem}</span>
+                <span className="text-red-400 text-xs px-1">
+                  {errors.mensagem}
+                </span>
               )}
             </div>
 
@@ -304,9 +364,10 @@ const Contato = () => {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              duration: 0.4, 
-              delay: 0.4 }}
+            transition={{
+              duration: 0.4,
+              delay: 0.4,
+            }}
             className="flex flex-col gap-3 xl:w-[300px] shrink-0 justify-center"
           >
             {info.map((item, i) => (
@@ -328,7 +389,6 @@ const Contato = () => {
               </div>
             ))}
           </motion.div>
-
         </div>
       </div>
     </section>

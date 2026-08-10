@@ -36,9 +36,9 @@ const Home = () => {
               <br />
               <span className="text-accent">Brenno Alencar</span>
             </h1>
-            <p className="max-w-[500px] mb-9 text-white/80">
-              Desenvolvedor Front-end com mais de 3 anos de experiência em
-              aplicações web modernas, responsivas e acessíveis.
+            <p className="max-w-[510px] mb-9 text-white/80">
+              Desenvolvedor Front-end com de 3 anos de experiência em aplicações
+              web modernas, responsivas e acessíveis.
             </p>
             {/* btn and socials */}
             <div className="flex flex-col xl:flex-row items-center gap-8">
